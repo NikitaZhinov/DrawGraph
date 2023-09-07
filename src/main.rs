@@ -1,3 +1,13 @@
+mod Input;
+
 fn main() {
-    println!("Hello, world!");
+
+    match Input::input() {
+        true => {
+            println!("nice");
+        },
+        false => println!("Error: failed input!")
+    }
 }
+
+
