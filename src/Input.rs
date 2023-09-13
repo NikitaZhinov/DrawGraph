@@ -1,17 +1,18 @@
+use std::any::Any;
 use std::io;
 
 pub fn input(lexems : &mut Vec<String>) -> bool {
     // input expration
     let mut expration : String = String::new();
     match get_expration(&mut expration) {
-        true => {},
+        true => {
+            // parsing expration
+            parsing(lexems, expration);
+
+            return check(lexems.clone());
+        },
         false => {return false;}
     }
-
-    // parsing expration
-    parsing(lexems, expration);
-
-    true
 }
 
 fn get_expration(expration : &mut String) -> bool {
@@ -40,11 +41,41 @@ fn parsing(lexems : &mut Vec<String>, expration : String) {
     }
 }
 
+fn check(lexems : Vec<String>) -> bool {
+    for elem in lexems {
+        if !check_str_number(elem.clone()) &&
+            !check_operation(elem.chars().nth(0).unwrap()) &&
+            !check_function(elem.clone()) {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn check_str_number(str : String) -> bool {
+    for n in str.chars() {
+        if !check_number(n) { return false; }
+    }
+    true
+}
+
 fn check_operation(symbol : char) -> bool {
     if symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/' ||
         symbol == '(' || symbol == ')' {
         return true;
     }
+    false
+}
+
+fn check_function(str : String) -> bool {
+    if str.eq(&mut "sin".to_string()) ||
+        str.eq(&mut "cos".to_string()) ||
+        str.eq(&mut "tn".to_string()) ||
+        str.eq(&mut "ctg".to_string()) ||
+        str.eq(&mut "sqrt".to_string()) ||
+        str.eq(&mut "x".to_string())
+    { return true; }
     false
 }
 
