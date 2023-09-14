@@ -1,21 +1,21 @@
-mod Input;
-// mod PolishNotation;
-// mod Stack;
+mod common;
+mod input;
+// mod polish_notation;
 
 fn main() {
-    let mut lexems = Vec::new();
+    let mut tokens = Vec::new();
 
-    match Input::input(&mut lexems) {
+    match input::get_expression(&mut tokens) {
         true => {
-            // let mut polish_lexems : Vec<String> = vec!();
-            // match PolishNotation::polish_notation(lexems, &mut polish_lexems) {
+            // let mut polish_tokens : Vec<String> = vec!();
+            // match polish_notation::transfer_to_polish(tokens, &mut polish_tokens) {
             //     true => {
-            //
+            //         println!("{:?}", polish_tokens);
             //     },
             //     false => println!("Error: uncorrected input!")
             // }
 
-            println!("{:?}", lexems);
+            println!("{:?}", tokens);
         },
         false => println!("Error: failed or uncorrected input!")
     }
