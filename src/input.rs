@@ -9,7 +9,7 @@ pub fn get_expression(tokens: &mut Vec<String>) -> bool {
             // parsing expression
             parsing(tokens, expression);
 
-            check(tokens.clone())
+            check(tokens)
         },
         Err(_) => { false }
     }
@@ -34,12 +34,30 @@ fn parsing(tokens: &mut Vec<String>, expression: String) {
     }
 }
 
-fn check(tokens: Vec<String>) -> bool {
-    for elem in tokens {
+fn check(tokens: &mut Vec<String>) -> bool {
+    // checking for errors
+    for elem in tokens.clone() {
         if !check_str_number(elem.clone()) &&
             !check_operation(elem.chars().nth(0).unwrap()) &&
             !check_function(elem.clone()) {
             return false;
+        }
+    }
+
+    // find unary minus
+    for i in 0..(tokens.len() - 1) {
+        if tokens[i] == "-" {
+            if i == 0 {
+                tokens[i] = "~".to_string();
+            } else if check_operation(tokens[i - 1].chars().nth(0).unwrap()) && tokens[i - 1] != "~" {
+                tokens[i] = "~".to_string();
+            } else {
+                return false;
+            }
+        } else if tokens[i] == "~" {
+            if i != 0 && tokens[i - 1] == "~" {
+                return false;
+            }
         }
     }
 

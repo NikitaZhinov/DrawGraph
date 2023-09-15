@@ -1,4 +1,4 @@
-pub static OPERATIONS : &'static str = "+-*/()";
+pub static OPERATIONS : &'static str = "+-*/^~()";
 pub static FUNCTIONS : [&str; 8] = [
     "x",
     "sin", "cos", "tg", "ctg",
@@ -29,7 +29,7 @@ pub fn check_operation(symbol : char) -> bool {
 
 pub fn check_function(str_function : String) -> bool {
     for func in FUNCTIONS {
-        if str_function.eq(&func) { return true; }
+        if str_function == func { return true; }
     }
     false
 }
@@ -39,15 +39,9 @@ pub struct Stack<T> {
 }
 
 impl<T> Stack<T> {
-    fn push_to_stack(&mut self, elem: T) {
-        self.date.push(elem);
-    }
+    fn push(&mut self, elem: T) { self.date.push(elem); }
 
-    pub fn pop_in_stack(&mut self) -> Option<T> {
-        self.date.pop()
-    }
+    pub fn pop(&mut self) -> Option<T> { self.date.pop() }
 
-    pub fn peek_stack(&self) -> Option<&T> {
-        self.date.last()
-    }
+    pub fn peek(&self) -> Option<&T> { self.date.last() }
 }
