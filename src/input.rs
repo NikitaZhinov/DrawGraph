@@ -19,7 +19,7 @@ fn parsing(tokens: &mut Vec<String>, expression: String) {
     let mut i = 0;
     while i < expression.len() - 1 {
         let current_symbol: char = expression.chars().nth(i).unwrap();
-        if check_operation(current_symbol) {
+        if check_operation(current_symbol.to_string()) != -1 {
             tokens.push((current_symbol).to_string().clone());
         } else if check_number(current_symbol) {
             add_number(expression.clone(), tokens, &mut i);
@@ -38,8 +38,9 @@ fn check(tokens: &mut Vec<String>) -> bool {
     // checking for errors
     for elem in tokens.clone() {
         if !check_str_number(elem.clone()) &&
-            !check_operation(elem.chars().nth(0).unwrap()) &&
+            !(check_operation(elem.clone()) != -1) &&
             !check_function(elem.clone()) {
+            println!("{} : {}", elem, check_operation(elem.clone()) != -1);
             return false;
         }
     }
@@ -49,7 +50,7 @@ fn check(tokens: &mut Vec<String>) -> bool {
         if tokens[i] == "-" {
             if i == 0 {
                 tokens[i] = "~".to_string();
-            } else if check_operation(tokens[i - 1].chars().nth(0).unwrap()) && tokens[i - 1] != "~" {
+            } else if check_operation(tokens[i - 1].to_string()) != -1 && tokens[i - 1] != "~" {
                 tokens[i] = "~".to_string();
             } else {
                 return false;
@@ -80,7 +81,7 @@ fn add_number(expression: String, tokens: &mut Vec<String>, i : &mut usize) {
 fn add_func(expression: String, tokens: &mut Vec<String>, i : &mut usize) {
     let mut func : String = String::new();
     let mut symbol : char = expression.chars().nth(*i).unwrap();
-    while check_operation(symbol) == false {
+    while check_operation(symbol.to_string()) == -1 {
         func.push(symbol);
         *i += 1;
         symbol = expression.chars().nth(*i).unwrap();

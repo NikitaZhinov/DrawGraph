@@ -1,4 +1,5 @@
-pub static OPERATIONS : &'static str = "+-*/^~()";
+use std::collections::HashMap;
+
 pub static FUNCTIONS : [&str; 8] = [
     "x",
     "sin", "cos", "tg", "ctg",
@@ -20,11 +21,22 @@ pub fn check_number(symbol : char) -> bool {
     false
 }
 
-pub fn check_operation(symbol : char) -> bool {
-    for op in OPERATIONS.chars() {
-        if symbol == op { return true; }
+pub fn check_operation(symbol : String) -> isize {
+    let operations: HashMap<&str, isize> = HashMap::from([
+        ("(", 0),
+        (")", 0),
+        ("+", 1),
+        ("-", 1),
+        ("*", 2),
+        ("/", 2),
+        ("^", 3),
+        ("~", 4)
+    ]);
+
+    for (op, priority) in operations {
+        if symbol == op.to_string() { return priority; }
     }
-    false
+    -1
 }
 
 pub fn check_function(str_function : String) -> bool {
@@ -32,16 +44,4 @@ pub fn check_function(str_function : String) -> bool {
         if str_function == func { return true; }
     }
     false
-}
-
-pub struct Stack<T> {
-    date: Vec<T>
-}
-
-impl<T> Stack<T> {
-    fn push(&mut self, elem: T) { self.date.push(elem); }
-
-    pub fn pop(&mut self) -> Option<T> { self.date.pop() }
-
-    pub fn peek(&self) -> Option<&T> { self.date.last() }
 }
