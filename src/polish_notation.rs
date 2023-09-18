@@ -1,6 +1,6 @@
 use crate::common::*;
 
-pub fn transfer_to_polish(tokens : Vec<String>, polish_tokens : &mut Vec<String>) -> bool {
+pub fn transfer_to_polish(tokens : Vec<String>, polish_tokens : &mut Vec<String>) {
     let mut stack = vec![];
 
     for elem in tokens {
@@ -26,6 +26,4 @@ pub fn transfer_to_polish(tokens : Vec<String>, polish_tokens : &mut Vec<String>
     while stack.len() > 0 {
         polish_tokens.push(stack.pop().unwrap());
     }
-
-    true
 }

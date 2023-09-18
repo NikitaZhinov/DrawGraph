@@ -22,7 +22,7 @@ pub fn check_number(symbol : char) -> bool {
 }
 
 pub fn check_operation(symbol : String) -> isize {
-    let operations: HashMap<&str, isize> = HashMap::from([
+    let operations = HashMap::from([
         ("(", 0),
         (")", 0),
         ("+", 1),
