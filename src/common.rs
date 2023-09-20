@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
-pub static FUNCTIONS : [&str; 8] = [
-    "x",
+pub static FUNCTIONS : [&str; 7] = [
     "sin", "cos", "tg", "ctg",
     "sqrt", "ln", "lg"
 ];

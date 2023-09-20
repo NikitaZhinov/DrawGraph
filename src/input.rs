@@ -1,7 +1,7 @@
 use std::io;
 use crate::common::*;
 
-pub fn get_expression(tokens: &mut Vec<String>) -> bool {
+pub fn get_expression(tokens: &mut Vec<String>) -> u8 {
     // input expression
     let mut expression = String::new();
     return match io::stdin().read_line(&mut expression) {
@@ -11,7 +11,7 @@ pub fn get_expression(tokens: &mut Vec<String>) -> bool {
 
             check(tokens)
         },
-        Err(_) => { false }
+        Err(_) => { 1 }
     }
 }
 
@@ -25,7 +25,7 @@ fn parsing(tokens: &mut Vec<String>, expression: String) {
             add_number(expression.clone(), tokens, &mut i);
             continue;
         } else if current_symbol == 'x' {
-            tokens.push((current_symbol).to_string().clone());
+            tokens.push(current_symbol.to_string().clone());
         } else {
             add_func(expression.clone(), tokens, &mut i);
             continue;
@@ -34,13 +34,14 @@ fn parsing(tokens: &mut Vec<String>, expression: String) {
     }
 }
 
-fn check(tokens: &mut Vec<String>) -> bool {
+fn check(tokens: &mut Vec<String>) -> u8 {
     // checking for errors
-    for elem in tokens.clone() {
-        if !check_str_number(elem.clone()) &&
-            !(check_operation(elem.clone()) != -1) &&
-            !check_function(elem.clone()) {
-            return false;
+    for token in tokens.clone() {
+        if !check_str_number(token.clone()) &&
+            !(check_operation(token.clone()) != -1) &&
+            !check_function(token.clone()) &&
+            token != "x" {
+            return 2;
         }
     }
 
@@ -49,17 +50,15 @@ fn check(tokens: &mut Vec<String>) -> bool {
         if tokens[i] == "-" {
             if i == 0 || (i > 0 && tokens[i - 1] == "(") {
                 tokens[i] = "~".to_string();
-            } else {
-                return false;
             }
         } else if tokens[i] == "~" {
             if i != 0 && tokens[i - 1] == "~" {
-                return false;
+                return 2;
             }
         }
     }
 
-    true
+    0
 }
 
 fn add_number(expression: String, tokens: &mut Vec<String>, i : &mut usize) {
