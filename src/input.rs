@@ -26,7 +26,7 @@ fn parsing(tokens: &mut Vec<String>, expression: String) {
             continue;
         } else if current_symbol == 'x' {
             tokens.push(current_symbol.to_string().clone());
-        } else {
+        } else if current_symbol.is_alphabetic() {
             add_func(expression.clone(), tokens, &mut i);
             continue;
         }
